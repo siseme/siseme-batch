@@ -424,6 +424,9 @@ public class TradeScheduleServiceImpl implements TradeScheduleService {
                                                                          numOfRows,
                                                                          pageNo);
         }
+        if(aptTradeDetailList == null) {
+            return Lists.newArrayList();
+        }
         return aptTradeDetailList.getBody()
                                  .getItems()
                                  .getItem()

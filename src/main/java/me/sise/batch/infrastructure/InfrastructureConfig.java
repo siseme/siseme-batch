@@ -1,6 +1,7 @@
 package me.sise.batch.infrastructure;
 
 import feign.Feign;
+import feign.Retryer;
 import feign.jaxb.JAXBContextFactory;
 import feign.jaxb.JAXBDecoder;
 import me.sise.batch.infrastructure.feign.AptRentApiClient;
@@ -26,6 +27,7 @@ public class InfrastructureConfig {
                                                  .withMarshallerJAXBEncoding(UTF_8)
                                                  .build()))
                     .contract(new SpringMvcContract())
+                    .retryer(new Retryer.Default())
                     .target(AptTradeApiClient.class, "trade-list-api");
     }
 
@@ -36,6 +38,7 @@ public class InfrastructureConfig {
                                                  .withMarshallerJAXBEncoding(UTF_8)
                                                  .build()))
                     .contract(new SpringMvcContract())
+                    .retryer(new Retryer.Default())
                     .target(AptRentApiClient.class, "rent-list-api");
     }
 }

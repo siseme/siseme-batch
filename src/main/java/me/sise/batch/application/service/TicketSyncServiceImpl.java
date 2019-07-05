@@ -252,6 +252,9 @@ public class TicketSyncServiceImpl implements TicketSyncService {
                                                                           numOfRows,
                                                                           pageNo);
         }
+        if(aptTradeDetailList == null) {
+            return Lists.newArrayList();
+        }
         return aptTradeDetailList.getBody()
                                  .getItems()
                                  .getItem()

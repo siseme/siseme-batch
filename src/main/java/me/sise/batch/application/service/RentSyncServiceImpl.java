@@ -209,6 +209,9 @@ public class RentSyncServiceImpl implements RentSyncService {
                                                                        numOfRows,
                                                                        pageNo);
         }
+        if(aptTradeDetailList == null) {
+            return Lists.newArrayList();
+        }
         return aptTradeDetailList.getBody()
                                  .getItems()
                                  .getItem()

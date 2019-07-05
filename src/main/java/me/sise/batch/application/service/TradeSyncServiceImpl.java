@@ -187,7 +187,7 @@ public class TradeSyncServiceImpl implements TradeSyncService {
         trade.setDongCode(dongCode);
         Region region = Optional.ofNullable(regionRepository.findByCode(dongCode))
                                 .orElse(regionRepository.findByCode("-1"));
-        trade.setDongName(region.getName());
+        trade.setDongName(Optional.ofNullable(region.getName()).orElse(""));
         trade.setLotNumber(openApiTradeInfo.getLotNumber());
         trade.setArea(Double.valueOf(openApiTradeInfo.getArea()));
         trade.setFloor(StringUtils.isEmpty(openApiTradeInfo.getFloor()) ? 0 : Integer.valueOf(openApiTradeInfo.getFloor()));
