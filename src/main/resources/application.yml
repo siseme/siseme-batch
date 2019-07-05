@@ -1,0 +1,40 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: local
+
+  main:
+    allow-bean-definition-overriding: true
+
+  devtools:
+    livereload:
+      enabled: true
+
+logging:
+  level:
+    me.sise.batch.scheduler.service: DEBUG
+
+# feign
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 20000
+        readTimeout: 20000
+        loggerLevel: basic
+
+ribbon:
+  eureka:
+    enabled: false
+
+trade-list-api:
+  ribbon:
+    listOfServers: openapi.molit.go.kr
+
+rent-list-api:
+  ribbon:
+    listOfServers: openapi.molit.go.kr:8081
+  api:
+    key: '{cipher}5886f103a07181b1f79844458233cdde67c850806a41710deb3f24bbff08a883630eb73cd127d9f0a4ca7a7f347579c6fc1e06311e7e50e6621ec05c03c291abf34d2891d7dc159756c9b1837a7c51b9768d54be9b0ee607db171e5c2058b6f34fb7bbd129f37de94dd615eef9eee61c'

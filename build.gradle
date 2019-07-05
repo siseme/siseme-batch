@@ -1,0 +1,47 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'io.freefair.lombok' version '3.2.1'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "io.freefair.lombok"
+
+group = 'me.sise.batch'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', 'Greenwich.SR1')
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:2.1.1.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.1.1.RELEASE'
+    implementation 'io.github.openfeign:feign-jaxb:9.3.1'
+    implementation 'io.github.openfeign:feign-jackson:9.3.1'
+    implementation 'javax.xml.bind:jaxb-api:2.2.4'
+
+    implementation 'com.google.guava:guava:23.0'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+
+    runtime 'com.h2database:h2'
+    runtime 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
+    runtime 'javax.activation:activation:1.1.1'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

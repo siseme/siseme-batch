@@ -1,0 +1,26 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    database: h2
+    showSql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:siseme;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL
+    username: sa
+    initialization-mode: EMBEDDED
+
+    hikari:
+      maximum-pool-size: 20
+      connection-timeout: 2000
+      connection-test-query: SELECT 1
+      validation-timeout: 5000
