@@ -28,7 +28,7 @@ public class TradeScheduler {
     @Scheduled(fixedDelay = Integer.MAX_VALUE)
     public void sync() {
         YearMonth currentYearMonth = YearMonth.now().minusMonths(4);
-        for (int i = 4; i >= 0; i--) {
+        for (int i = 120; i >= 0; i--) {
             tradeSyncService.syncOpenApiList(currentYearMonth);
             tradeSyncService.syncDataList(currentYearMonth);
             tradeSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
