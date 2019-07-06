@@ -16,13 +16,3 @@ spring:
     driverClassName: org.mariadb.jdbc.Driver
     initialization-mode: NEVER
 
-    hikari:
-      maximum-pool-size: 20
-      connection-timeout: 2000
-      connection-test-query: SELECT 1
-      validation-timeout: 5000
-      data-source-properties:
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        cachePrepStmts: true
-        useServerPrepStmts: true
