@@ -15,4 +15,13 @@ spring:
     password: '{cipher}a3d692fdbf1b2f82277ea1991941642c3f6c032a5d0295c1e5e3a015fee2ef13'
     driverClassName: org.mariadb.jdbc.Driver
     initialization-mode: NEVER
-
+    hikari:
+      maximum-pool-size: 20
+      connection-timeout: 2000
+      connection-test-query: SELECT 1
+      validation-timeout: 5000
+      data-source-properties:
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        cachePrepStmts: true
+        useServerPrepStmts: true
