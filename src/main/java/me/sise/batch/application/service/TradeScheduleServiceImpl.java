@@ -140,12 +140,12 @@ public class TradeScheduleServiceImpl implements TradeScheduleService {
         // 4. 중복이 제거된 B리스트에 있는 값을 디비 INSERT
         if (afterUniqueList.size() > 0) {
             openApiTradeInfoRepository.saveAll(afterUniqueList);
-            log.debug("# {} # syncOpenApiTradeList() : yearMonth : {}, uniqueList.size : {}",
+            log.info("# {} # syncOpenApiTradeList() : yearMonth : {}, uniqueList.size : {}",
                       ChronoUnit.SECONDS.between(startLocalDateTime, LocalDateTime.now()),
                       yearMonth.getYear() + "/" + yearMonth.getMonthValue(),
                       afterUniqueList.size());
         } else {
-            log.debug("# syncOpenApiList : yearMonth : {}, 신규데이터 없음", yearMonth.getYear() + "/" + yearMonth.getMonthValue());
+            log.info("# syncOpenApiList : yearMonth : {}, 신규데이터 없음", yearMonth.getYear() + "/" + yearMonth.getMonthValue());
         }
     }
 
@@ -175,12 +175,12 @@ public class TradeScheduleServiceImpl implements TradeScheduleService {
         if (afterUniqueList.size() > 0) {
             this.syncMaxPrice(afterUniqueList, YearMonth.now());
             tradeRepository.saveAll(afterUniqueList.stream().peek(x -> x.setMaxPrice(this.getMaxPrice(x))).collect(Collectors.toList()));
-            log.debug("# {} # syncTradeList() : yearMonth : {}, uniqueList.size : {}",
+            log.info("# {} # syncTradeList() : yearMonth : {}, uniqueList.size : {}",
                       ChronoUnit.SECONDS.between(startLocalDateTime, LocalDateTime.now()),
                       yearMonth.getYear() + "/" + yearMonth.getMonthValue(),
                       afterUniqueList.size());
         } else {
-            log.debug("# syncTradeList : yearMonth : {}, 신규데이터 없음", yearMonth.getYear() + "/" + yearMonth.getMonthValue());
+            log.info("# syncTradeList : yearMonth : {}, 신규데이터 없음", yearMonth.getYear() + "/" + yearMonth.getMonthValue());
         }
     }
 
@@ -228,7 +228,7 @@ public class TradeScheduleServiceImpl implements TradeScheduleService {
             tradeRanksService.syncTradeRanks(byDateAndDongCode, yyyyMmDate, region, regionType);
         }
         tradeStatsRepository.saveAll(result);
-        log.debug("# [INSERT] syncTradeStatsList - regionType : {}, yearMonth : {}, size : {}",
+        log.info("# [INSERT] syncTradeStatsList - regionType : {}, yearMonth : {}, size : {}",
                   regionType.name(),
                   yyyyMmDate,
                   result.size());
@@ -320,7 +320,7 @@ public class TradeScheduleServiceImpl implements TradeScheduleService {
                                                    })
                                                    .collect(Collectors.toList());
         apartmentRepository.saveAll(aptMaxPriceList);
-        log.debug("# syncMaxPrice : aptMaxPriceList.size  {}", aptMaxPriceList.size());
+        log.info("# syncMaxPrice : aptMaxPriceList.size  {}", aptMaxPriceList.size());
     }
 
     @Override
