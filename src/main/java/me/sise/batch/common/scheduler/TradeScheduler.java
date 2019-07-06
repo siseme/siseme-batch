@@ -27,8 +27,9 @@ public class TradeScheduler {
 
     @Scheduled(fixedDelay = Integer.MAX_VALUE)
     public void sync() {
-        YearMonth currentYearMonth = YearMonth.now().minusMonths(120);
-        for (int i = 120; i >= 0; i--) {
+        YearMonth currentYearMonth = YearMonth.now();
+        for (int i = 0; i < 120; i++) {
+            tradeSyncService.syncDataList(currentYearMonth);
             tradeSyncService.syncOpenApiList(currentYearMonth);
             tradeSyncService.syncDataList(currentYearMonth);
             tradeSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
@@ -44,7 +45,7 @@ public class TradeScheduler {
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.GUNGU);
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.DONG);
-            currentYearMonth = currentYearMonth.plusMonths(1);
+            currentYearMonth = currentYearMonth.minusMonths(1);
         }
     }
 }

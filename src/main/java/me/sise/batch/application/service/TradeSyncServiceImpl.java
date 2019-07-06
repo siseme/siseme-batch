@@ -185,9 +185,15 @@ public class TradeSyncServiceImpl implements TradeSyncService {
         trade.setSidoCode(sidoCode);
         trade.setGunguCode(gunguCode);
         trade.setDongCode(dongCode);
-        Region region = Optional.ofNullable(regionRepository.findByCode(dongCode))
-                                .orElse(regionRepository.findByCode("-1"));
-        trade.setDongName(Optional.ofNullable(region.getName()).orElse(""));
+        Optional<Region> optionalRegion = Optional.ofNullable(regionRepository.findByCode(dongCode));
+        if(optionalRegion.isPresent()) {
+            Region region = new Region();
+            region.setCode(dongCode);
+            region.setName(openApiTradeInfo.getDong());
+            region.setFullName(openApiTradeInfo.getDong());
+            optionalRegion = Optional.of(regionRepository.save(region));
+        }
+        trade.setDongName(optionalRegion.get().getName());
         trade.setLotNumber(openApiTradeInfo.getLotNumber());
         trade.setArea(Double.valueOf(openApiTradeInfo.getArea()));
         trade.setFloor(StringUtils.isEmpty(openApiTradeInfo.getFloor()) ? 0 : Integer.valueOf(openApiTradeInfo.getFloor()));

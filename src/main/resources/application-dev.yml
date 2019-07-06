@@ -26,5 +26,3 @@ spring:
         prepStmtCacheSqlLimit: 2048
         cachePrepStmts: true
         useServerPrepStmts: true
-      idle-timeout: 10000
-      max-lifetime: 420000
