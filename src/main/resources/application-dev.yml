@@ -17,7 +17,7 @@ spring:
     initialization-mode: NEVER
     hikari:
       maximum-pool-size: 20
-      connection-timeout: 2000
+      connection-timeout: 10000
       connection-test-query: SELECT 1
       validation-timeout: 5000
       data-source-properties:
