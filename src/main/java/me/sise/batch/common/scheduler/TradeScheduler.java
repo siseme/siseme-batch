@@ -45,7 +45,7 @@ public class TradeScheduler {
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.GUNGU);
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.DONG);
-            currentYearMonth = currentYearMonth.minusMonths(1);
+            currentYearMonth = currentYearMonth.plusMonths(1);
         }
     }
 }
