@@ -29,7 +29,6 @@ public class TradeScheduler {
     public void sync() {
         YearMonth currentYearMonth = YearMonth.now().minusMonths(60);
         for (int i = 60; i >= 0; i--) {
-            tradeSyncService.syncDataList(currentYearMonth);
             tradeSyncService.syncOpenApiList(currentYearMonth);
             tradeSyncService.syncDataList(currentYearMonth);
             tradeSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
