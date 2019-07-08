@@ -31,19 +31,25 @@ public class TradeScheduler {
         for (int i = 0; i < 120; i++) {
             tradeSyncService.syncOpenApiList(currentYearMonth);
             tradeSyncService.syncDataList(currentYearMonth);
+/*
             tradeSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
             tradeSyncService.syncTradeStatsList(currentYearMonth, RegionType.GUNGU);
             tradeSyncService.syncTradeStatsList(currentYearMonth, RegionType.DONG);
+*/
             ticketSyncService.syncOpenApiList(currentYearMonth);
             ticketSyncService.syncDataList(currentYearMonth);
+/*
             ticketSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
             ticketSyncService.syncTradeStatsList(currentYearMonth, RegionType.GUNGU);
             ticketSyncService.syncTradeStatsList(currentYearMonth, RegionType.DONG);
+*/
             rentSyncService.syncOpenApiList(currentYearMonth);
             rentSyncService.syncDataList(currentYearMonth);
+/*
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.SIDO);
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.GUNGU);
             rentSyncService.syncTradeStatsList(currentYearMonth, RegionType.DONG);
+*/
             currentYearMonth = currentYearMonth.minusMonths(1);
         }
     }
