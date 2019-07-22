@@ -14,7 +14,7 @@ spring:
     username: '{cipher}60f14de512b7f6ac4899bd14b24daae265568b1e4baadea1e97cb5570bda7618'
     password: '{cipher}24bf197c7d40c55c1ec910b48b4cebd4b301f30a94c371237c4ccd883368a6cb'
     driverClassName: org.mariadb.jdbc.Driver
-    initialization-mode: NEVER
+    initialization-mode: ALWAYS
     hikari:
       maximum-pool-size: 20
       connection-timeout: 10000
