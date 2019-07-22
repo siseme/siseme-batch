@@ -10,9 +10,9 @@ spring:
       hibernate.use_sql_comments: true
 
   datasource:
-    url: '{cipher}414a63b9d2280731d68c9eb0e7242b43cfa80c6760cd9ae528bf5e4c9007318140f9aa789aa9750fcd2217888b85896ddce0711044f1bc3acc2bec653ef753a7a7679e179cd5da0abab3783c4ee820be4de7dfd03f0d37560ecadbeb4d4c59fa720710262edf8dec1e34fdee153c24bd9f11dfad6d87a02a5da75a579c26ab5b72fbe17ee5c0baa5684b8a417817fc2c'
-    username: '{cipher}144bd60cb697b41fa30211933eee4c6df2b5089ab628069a946ee6afad4fb199'
-    password: '{cipher}a3d692fdbf1b2f82277ea1991941642c3f6c032a5d0295c1e5e3a015fee2ef13'
+    url: '{cipher}2d17191858dd3de3c174067198f7def16ff8a823cd07c7b7a438e8523510cbd018e2f0b40fc82c8c1403317f7fb21953ee08351b41cc5c5905a1f530c4ef91f9'
+    username: '{cipher}60f14de512b7f6ac4899bd14b24daae265568b1e4baadea1e97cb5570bda7618'
+    password: '{cipher}24bf197c7d40c55c1ec910b48b4cebd4b301f30a94c371237c4ccd883368a6cb'
     driverClassName: org.mariadb.jdbc.Driver
     initialization-mode: NEVER
     hikari:
