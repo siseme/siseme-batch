@@ -19,11 +19,9 @@ spring:
       maximum-pool-size: 20
       connection-timeout: 10000
       connection-test-query: SELECT 1
-      validation-timeout: 10000
+      validation-timeout: 5000
       data-source-properties:
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
         cachePrepStmts: true
         useServerPrepStmts: true
-      idle-timeout: 10000
-      max-lifetime: 420000
