@@ -25,7 +25,7 @@ public class TradeScheduler {
         this.rentSyncService = rentSyncService;
     }
 
-    @Scheduled(cron = "0 30 6,12,18 * * *")
+    @Scheduled(cron = "0 0 7,13,19 * * *")
     public void sync() {
         YearMonth currentYearMonth = YearMonth.now().minusMonths(4);
         for (int i = 4; i >= 0; i--) {
