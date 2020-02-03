@@ -29,6 +29,10 @@ ribbon:
   eureka:
     enabled: false
 
+hgnn-api:
+  ribbon:
+    listOfServers: hogangnono.com
+
 trade-list-api:
   ribbon:
     listOfServers: openapi.molit.go.kr
