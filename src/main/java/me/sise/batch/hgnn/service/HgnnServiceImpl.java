@@ -63,52 +63,29 @@ public class HgnnServiceImpl implements HgnnService {
         for (int i = 0; i < regionList.size(); i++) {
             String x = regionList.get(i);
             try {
-                RegionTemp byRegionCode = regionTempRepository.findByRegionCode(x);
-                if(byRegionCode != null) {
-                    RegionTempSample regionTempSample = this.objectMapper.readValue(byRegionCode.getData(), RegionTempSample.class);
-                    List<RegionTempSample.RegionData.Apt> aptList = regionTempSample.getData().getApts();
-                    for (int i1 = 0; i1 < aptList.size(); i1++) {
-                        RegionTempSample.RegionData.Apt apt = aptList.get(i1);
-                        String aptDetail = hgnnApiClient.getAptDetail(apt.getId());
-                        AptTemp aptTemp = new AptTemp();
-                        aptTemp.setRegionCode(x);
-                        aptTemp.setAptId(apt.getId());
-                        aptTemp.setData(aptDetail);
-                        aptTempRepository.save(aptTemp);
-                        System.out.println(i + "번째 - " + i1 + " / " + apt.getId());
-                    }
-                }
-/*
+                String data = hgnnApiClient.getHgnnRegion(x);
                 RegionTemp regionTemp = new RegionTemp();
                 regionTemp.setRegionCode(x);
-                regionTemp.setData(hgnnApiClient.getHgnnRegion(x));
-                System.out.println(i + "번째 - " + regionTemp.getRegionCode());
+                regionTemp.setData(data);
+
                 regionTempRepository.save(regionTemp);
-*/
-/*
-                System.out.println(i + " / " + result.getData());
-                hgnnRegionRepository.save(result.getData());
-*/
+
+                RegionTempSample regionTempSample = this.objectMapper.readValue(regionTemp.getData(), RegionTempSample.class);
+                List<RegionTempSample.RegionData.Apt> aptList = regionTempSample.getData().getApts();
+                for (int i1 = 0; i1 < aptList.size(); i1++) {
+                    RegionTempSample.RegionData.Apt apt = aptList.get(i1);
+                    String aptDetail = hgnnApiClient.getAptDetail(apt.getId());
+                    AptTemp aptTemp = new AptTemp();
+                    aptTemp.setRegionCode(x);
+                    aptTemp.setAptId(apt.getId());
+                    aptTemp.setData(aptDetail);
+                    aptTempRepository.save(aptTemp);
+                    System.out.println(i + "번째 - " + i1 + " / " + apt.getId());
+                }
             }
             catch (Exception e) {
+                e.printStackTrace();
             }
         }
-/*
-        result = result.stream().filter(StringUtils::isNotEmpty).distinct().collect(Collectors.toList());
-
-        for (int i = 0; i < result.size(); i++) {
-            try {
-                String aptDetail = hgnnApiClient.getAptDetail(result.get(i));
-                AptTemp aptTemp = new AptTemp();
-                aptTemp.setRegionCode();
-                aptTemp.setAptId();
-                aptTemp.setData(aptDetail);
-            }
-            catch (Exception e) {}
-        }
-
-        result.forEach(x -> System.out.println(x));
-
-        System.out.println(result);*/
     }
 }
