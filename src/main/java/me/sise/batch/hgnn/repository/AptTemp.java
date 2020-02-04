@@ -7,13 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Entity
-@Table(name = "HGNN_APT_TEMP")
+@Table(name = "HGNN_APT_TEMP", indexes = {@Index(columnList = "regionCode")})
 public class AptTemp {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,5 +22,6 @@ public class AptTemp {
     private String regionCode;
     private String aptId;
     @Lob
+
     private String data;
 }

@@ -1,7 +1,12 @@
 package me.sise.batch.hgnn.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.SimpleType;
 import com.google.common.collect.Lists;
+import me.sise.batch.hgnn.repository.ApartmentMatchTable;
+import me.sise.batch.hgnn.repository.ApartmentMatchTableRepository;
+import me.sise.batch.domain.Apartment;
 import me.sise.batch.hgnn.feign.HgnnApiClient;
 import me.sise.batch.hgnn.repository.AptTemp;
 import me.sise.batch.hgnn.repository.AptTempRepository;
@@ -16,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class HgnnServiceImpl implements HgnnService {
@@ -25,19 +29,59 @@ public class HgnnServiceImpl implements HgnnService {
     private final ObjectMapper objectMapper;
     private final RegionTempRepository regionTempRepository;
     private final AptTempRepository aptTempRepository;
+    private final ApartmentMatchTableRepository apartmentMatchTableRepository;
 
     public HgnnServiceImpl(HgnnApiClient hgnnApiClient,
                            RegionRepository regionRepository,
                            ObjectMapper objectMapper,
-                           RegionTempRepository regionTempRepository, AptTempRepository aptTempRepository) {
+                           RegionTempRepository regionTempRepository,
+                           AptTempRepository aptTempRepository,
+                           ApartmentMatchTableRepository apartmentMatchTableRepository) {
         this.hgnnApiClient = hgnnApiClient;
         this.regionRepository = regionRepository;
         this.objectMapper = objectMapper;
         this.regionTempRepository = regionTempRepository;
         this.aptTempRepository = aptTempRepository;
+        this.apartmentMatchTableRepository = apartmentMatchTableRepository;
     }
 
     @Scheduled(fixedDelay = Integer.MAX_VALUE)
+    @Override
+    public void test() {
+        for (ApartmentMatchTable amt : apartmentMatchTableRepository.findAll()) {
+            List<AptTemp> byRegionCode = aptTempRepository.findByRegionCode(amt.getDongSigunguCode() + amt.getDongCode());
+            for (AptTemp aptTemp : byRegionCode) {
+                JsonNode jsonNode = null;
+                try {
+                    jsonNode = objectMapper.readValue(aptTemp.getData(), SimpleType.constructUnsafe(JsonNode.class));
+                    String[] split = jsonNode.get("data").get("address").toString().replace("\"", "").split(" ");
+                    String lotNumber = split[split.length - 1];
+                    if(amt.getLotNumber().equals(lotNumber)) {
+                        if(StringUtils.isEmpty(amt.getHgnnId())) {
+                            String name = jsonNode.get("data").get("name").toString().replace("\"", "");
+                            String portalId = null;
+                            try {
+                                portalId = jsonNode.get("data").get("portal_id").toString().replace("\"", "");
+                            }
+                            catch (Exception e) {
+                            }
+                            amt.setHgnnId(aptTemp.getAptId());
+                            amt.setHgnnAptName(name);
+                            amt.setHgnnRegionCode(aptTemp.getRegionCode());
+                            amt.setPortalId(portalId);
+                            apartmentMatchTableRepository.save(amt);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /*
+        @Scheduled(fixedDelay = Integer.MAX_VALUE)
+    */
     @Override
     public void fetchHgnnRegion() {
 //        System.out.println();
