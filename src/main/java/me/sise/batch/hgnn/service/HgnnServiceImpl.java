@@ -49,15 +49,15 @@ public class HgnnServiceImpl implements HgnnService {
     @Override
     public void test() {
         for (ApartmentMatchTable amt : apartmentMatchTableRepository.findAll()) {
-            List<AptTemp> byRegionCode = aptTempRepository.findByRegionCode(amt.getDongSigunguCode() + amt.getDongCode());
-            for (AptTemp aptTemp : byRegionCode) {
-                JsonNode jsonNode = null;
-                try {
-                    jsonNode = objectMapper.readValue(aptTemp.getData(), SimpleType.constructUnsafe(JsonNode.class));
-                    String[] split = jsonNode.get("data").get("address").toString().replace("\"", "").split(" ");
-                    String lotNumber = split[split.length - 1];
-                    if(amt.getLotNumber().equals(lotNumber)) {
-                        if(StringUtils.isEmpty(amt.getHgnnId())) {
+            if(StringUtils.isEmpty(amt.getHgnnId())) {
+                List<AptTemp> byRegionCode = aptTempRepository.findByRegionCode(amt.getDongSigunguCode() + amt.getDongCode());
+                for (AptTemp aptTemp : byRegionCode) {
+                    JsonNode jsonNode = null;
+                    try {
+                        jsonNode = objectMapper.readValue(aptTemp.getData(), SimpleType.constructUnsafe(JsonNode.class));
+                        String[] split = jsonNode.get("data").get("address").toString().replace("\"", "").split(" ");
+                        String lotNumber = split[split.length - 1];
+                        if(amt.getLotNumber().equals(lotNumber)) {
                             String name = jsonNode.get("data").get("name").toString().replace("\"", "");
                             String portalId = null;
                             try {
@@ -70,10 +70,11 @@ public class HgnnServiceImpl implements HgnnService {
                             amt.setHgnnRegionCode(aptTemp.getRegionCode());
                             amt.setPortalId(portalId);
                             apartmentMatchTableRepository.save(amt);
+                            break;
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }
