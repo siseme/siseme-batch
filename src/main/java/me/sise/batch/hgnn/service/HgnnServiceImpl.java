@@ -50,7 +50,8 @@ public class HgnnServiceImpl implements HgnnService {
     public void test() {
         for (ApartmentMatchTable amt : apartmentMatchTableRepository.findAll()) {
             if(StringUtils.isEmpty(amt.getHgnnId())) {
-                List<AptTemp> byRegionCode = aptTempRepository.findByRegionCode(amt.getDongSigunguCode() + amt.getDongCode());
+                String regionCode = amt.getDongSigunguCode() + amt.getDongCode().substring(0, 3) + "00";
+                List<AptTemp> byRegionCode = aptTempRepository.findByRegionCode(regionCode);
                 for (AptTemp aptTemp : byRegionCode) {
                     JsonNode jsonNode = null;
                     try {
@@ -70,6 +71,7 @@ public class HgnnServiceImpl implements HgnnService {
                             amt.setHgnnRegionCode(aptTemp.getRegionCode());
                             amt.setPortalId(portalId);
                             apartmentMatchTableRepository.save(amt);
+                            System.out.println(amt);
                             break;
                         }
                     } catch (IOException e) {

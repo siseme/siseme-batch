@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Entity
-@Table(name = "HGNN_APT_TEMP", indexes = {@Index(columnList = "regionCode")})
+@Table(name = "HGNN_APT_TEMP", indexes = {@Index(columnList = "regionCode"), @Index(columnList = "aptId")})
 public class AptTemp {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
