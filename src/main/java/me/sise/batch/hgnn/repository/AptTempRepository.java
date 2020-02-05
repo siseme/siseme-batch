@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AptTempRepository extends JpaRepository<AptTemp, Long> {
     List<AptTemp> findByRegionCode(String regionCode);
+
+    List<AptTemp> findByAptIdAndRegionCode(String aptId, String regionCode);
 }

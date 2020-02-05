@@ -2,6 +2,7 @@ package me.sise.batch.hgnn.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.google.common.collect.Lists;
 import me.sise.batch.hgnn.repository.ApartmentMatchTable;
@@ -16,11 +17,14 @@ import me.sise.batch.infrastructure.jpa.RegionRepository;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HgnnServiceImpl implements HgnnService {
@@ -45,7 +49,9 @@ public class HgnnServiceImpl implements HgnnService {
         this.apartmentMatchTableRepository = apartmentMatchTableRepository;
     }
 
+/*
     @Scheduled(fixedDelay = Integer.MAX_VALUE)
+*/
     @Override
     public void test() {
         for (ApartmentMatchTable amt : apartmentMatchTableRepository.findAll()) {
@@ -80,6 +86,87 @@ public class HgnnServiceImpl implements HgnnService {
                 }
             }
         }
+    }
+
+/*
+    @Scheduled(fixedDelay = Integer.MAX_VALUE)
+*/
+    @Override
+    public void test2() {
+        List<ApartmentMatchTable> byHgnnIdIsNull = apartmentMatchTableRepository.findByHgnnIdIsNull();
+        for (ApartmentMatchTable amt : byHgnnIdIsNull) {
+            String suggest = hgnnApiClient.suggest(amt.getAptName());
+            try {
+                JsonNode o = objectMapper.readValue(suggest, SimpleType.constructUnsafe(JsonNode.class));
+                ArrayNode arrayNode = (ArrayNode) o.get("data")
+                                                  .get("matched")
+                                                  .get("apt");
+                for (JsonNode jsonNode : arrayNode) {
+                    String id = jsonNode.get("id").toString().replace("\"", "");
+                    String aptDetail = hgnnApiClient.getAptDetail(id);
+/*
+                    String name = jsonNode.get("name").toString().toString().replace("\"", "");
+                    String hiddenName = jsonNode.get("hidden_name").toString().toString().replace("\"", "");
+                    String address = jsonNode.get("address").toString().toString().replace("\"", "");
+*/
+                    JsonNode detail = objectMapper.readValue(aptDetail, SimpleType.constructUnsafe(JsonNode.class));
+                    String regionCode = detail.get("data").get("regionCode").toString().replace("\"", "");
+                    String[] split = detail.get("data").get("address").toString().replace("\"", "").split(" ");
+                    String lotNumber = split[split.length - 1];
+                    if(regionCode.equals(amt.getDongSigunguCode() + amt.getDongCode().substring(0, 3) + "00") && amt.getLotNumber().equals(lotNumber)) {
+                        String name = detail.get("data").get("name").toString().replace("\"", "");
+                        String portalId = null;
+                        try {
+                            portalId = detail.get("data").get("portal_id").toString().replace("\"", "");
+                        }
+                        catch (Exception e) {
+                        }
+                        amt.setHgnnId(id);
+                        amt.setHgnnAptName(name);
+                        amt.setHgnnRegionCode(regionCode);
+                        amt.setPortalId(portalId);
+                        apartmentMatchTableRepository.save(amt);
+                        System.out.println(amt);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("end..");
+    }
+
+    @Scheduled(fixedDelay = Integer.MAX_VALUE)
+    @Override
+    public void test3() {
+        List<AptTemp> result = Lists.newArrayList();
+        for (ApartmentMatchTable amt : apartmentMatchTableRepository.findByHgnnIdIsNotNull()) {
+            try {
+                Optional<AptTemp> first = aptTempRepository.findByAptIdAndRegionCode(amt.getHgnnId(), amt.getHgnnRegionCode())
+                                                           .stream()
+                                                           .filter(x -> x.getAptId()
+                                                                         .equals(amt.getHgnnId()))
+                                                           .findFirst();
+                if(!first.isPresent()) {
+                    String aptDetail = hgnnApiClient.getAptDetail(amt.getHgnnId());
+                    AptTemp aptTemp = new AptTemp();
+                    aptTemp.setAptId(amt.getHgnnId());
+                    aptTemp.setData(aptDetail);
+                    aptTemp.setRegionCode(amt.getHgnnRegionCode());
+                    result.add(aptTemp);
+/*
+                    aptTempRepository.save(aptTemp);
+*/
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("start..");
+        aptTempRepository.saveAll(result);
+        System.out.println("end..");
     }
 
     /*
