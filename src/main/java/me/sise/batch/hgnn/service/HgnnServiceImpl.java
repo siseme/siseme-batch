@@ -137,7 +137,9 @@ public class HgnnServiceImpl implements HgnnService {
         System.out.println("end..");
     }
 
+/*
     @Scheduled(fixedDelay = Integer.MAX_VALUE)
+*/
     @Override
     public void test3() {
         List<AptTemp> result = Lists.newArrayList();
@@ -167,6 +169,96 @@ public class HgnnServiceImpl implements HgnnService {
         System.out.println("start..");
         aptTempRepository.saveAll(result);
         System.out.println("end..");
+    }
+
+/*
+    @Scheduled(fixedDelay = Integer.MAX_VALUE)
+*/
+    @Override
+    public void test4() {
+        for (ApartmentMatchTable amt : apartmentMatchTableRepository.findByHgnnIdIsNull()) {
+            List<AptTemp> byRegionCode = aptTempRepository.findByRegionCode(amt.getDongSigunguCode() + amt.getDongCode().substring(0, 3) + "00");
+            for (AptTemp aptTemp : byRegionCode) {
+                JsonNode o = null;
+                try {
+                    o = objectMapper.readValue(aptTemp.getData(), SimpleType.constructUnsafe(JsonNode.class));
+                    String regionCode = o.get("data").get("regionCode").toString().replace("\"", "");
+                    String[] split = o.get("data").get("address").toString().replace("\"", "").split(" ");
+                    String lotNumber = split[split.length - 1];
+                    String name = o.get("data").get("name").toString().replace("\"", "");
+                    if(regionCode.equals(amt.getDongSigunguCode() + amt.getDongCode().substring(0, 3) + "00") && lotNumber.equals(amt.getLotNumber())) {
+                        System.out.println("=======================");
+                        System.out.println(amt);
+                        System.out.println(aptTemp.getId() + "/" + aptTemp.getAptId() + "/" + aptTemp.getRegionCode() + "/" + lotNumber);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Scheduled(fixedDelay = Integer.MAX_VALUE)
+    @Override
+    public void test5() {
+        for (ApartmentMatchTable amt : apartmentMatchTableRepository.findByHgnnIdIsNull()) {
+            try {
+                String suggest = hgnnApiClient.suggest(amt.getAptName());
+                JsonNode o = objectMapper.readValue(suggest, SimpleType.constructUnsafe(JsonNode.class));
+                ArrayNode arrayNode = (ArrayNode) o.get("data")
+                                                   .get("matched")
+                                                   .get("apt");
+                for (JsonNode jsonNode : arrayNode) {
+                    String hiddenName = jsonNode.get("hidden_name").toString().replace("\"", "");
+                    String aptId = jsonNode.get("id").toString().replace("\"", "");
+                    List<AptTemp> byAptId = aptTempRepository.findByAptId(aptId);
+                    for (AptTemp aptTemp : byAptId) {
+                        String amtRegionCode = amt.getDongSigunguCode() + amt.getDongCode().substring(0, 3) + "00";
+                        if (aptTemp.getRegionCode().equals(amtRegionCode)) {
+                            if (StringUtils.isNotEmpty(hiddenName) && hiddenName.contains("(") && hiddenName.contains(")")) {
+                                String replaceName = hiddenName.substring(hiddenName.indexOf("(") + 1, hiddenName.indexOf(")"));
+                                String sampleName1 = amt.getAptName();
+                                String sampleName2 = amt.getAptName()
+                                                        .replace("(", "")
+                                                        .replace(")", "");
+                                jsonNode = objectMapper.readValue(aptTemp.getData(), SimpleType.constructUnsafe(JsonNode.class));
+                                String address = jsonNode.get("data")
+                                                         .get("address")
+                                                         .toString()
+                                                         .replace("\"", "");
+                                String[] split = address.split(" ");
+                                String lotNumber = split[split.length - 1];
+                                RegionTemp byRegionCode = regionTempRepository.findByRegionCode(amtRegionCode);
+                                if(ObjectUtils.isEmpty(byRegionCode)) {
+                                    String hgnnRegion = hgnnApiClient.getHgnnRegion(amtRegionCode);
+                                    RegionTemp regionTemp = new RegionTemp();
+                                    regionTemp.setData(hgnnRegion);
+                                    regionTemp.setRegionCode(amtRegionCode);
+                                    System.out.println(regionTemp);
+                                    byRegionCode = regionTempRepository.save(regionTemp);
+                                }
+                                if (sampleName1.equals(replaceName) || sampleName2.equals(replaceName)) {
+                                    String hgnnId = jsonNode.get("data").get("id").toString().replace("\"", "");
+                                    String hgnnAptName = jsonNode.get("data").get("name").toString().replace("\"", "");
+                                    String hgnnRegionCode = jsonNode.get("data").get("regionCode").toString().replace("\"", "");
+                                    String portalId = jsonNode.get("data").get("portal_id").toString().replace("\"", "");
+                                    amt.setHgnnId(hgnnId);
+                                    amt.setHgnnAptName(hgnnAptName);
+                                    amt.setHgnnRegionCode(hgnnRegionCode);
+                                    amt.setPortalId(portalId);
+                                    apartmentMatchTableRepository.save(amt);
+                                }
+                            }
+                        }
+                    }
+                }
+/*                String replaceAptName = aptName.replace("(", "").replace(")", "");*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        System.out.println("### END");
     }
 
     /*
