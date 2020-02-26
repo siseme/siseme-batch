@@ -38,6 +38,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:23.0'
     implementation 'org.apache.commons:commons-lang3:3.9'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.9'
 
     runtime 'com.h2database:h2'
     runtime 'org.glassfish.jaxb:jaxb-runtime:2.3.0'

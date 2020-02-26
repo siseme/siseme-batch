@@ -41,4 +41,5 @@ public class InfrastructureConfig {
                     .retryer(new Retryer.Default())
                     .target(AptRentApiClient.class, "rent-list-api");
     }
+
 }
