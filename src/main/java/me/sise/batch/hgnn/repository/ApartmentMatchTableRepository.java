@@ -8,4 +8,6 @@ public interface ApartmentMatchTableRepository extends JpaRepository<ApartmentMa
     List<ApartmentMatchTable> findByHgnnIdIsNull();
 
     List<ApartmentMatchTable> findByHgnnIdIsNotNull();
+
+    List<ApartmentMatchTable> findAllByPortalIdIsNotNull();
 }

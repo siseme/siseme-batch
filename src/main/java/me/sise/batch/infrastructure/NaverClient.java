@@ -1,7 +1,7 @@
 package me.sise.batch.infrastructure;
 
 import me.sise.batch.common.utils.NaverURLBuilder;
-import me.sise.batch.domain.NaverTradeInfo;
+import me.sise.batch.domain.NaverTrade;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,7 +12,7 @@ public class NaverClient {
 
     public NaverClient(RestTemplate restTemplate) {this.restTemplate = restTemplate;}
 
-    public NaverTradeInfo getNaverTradeInfo(String portalId, int page) {
-        return restTemplate.getForObject(NaverURLBuilder.buildRequestURL(portalId, page), NaverTradeInfo.class);
+    public NaverTrade getNaverTradeInfo(String portalId, int page) {
+        return restTemplate.getForObject(NaverURLBuilder.buildRequestURL(portalId, page), NaverTrade.class);
     }
 }

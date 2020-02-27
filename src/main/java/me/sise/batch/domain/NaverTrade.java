@@ -10,17 +10,17 @@ import java.util.List;
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NaverTradeInfo {
+public class NaverTrade {
     private boolean isMoreData;
-    private List<NaverTradeInfoArticle> articleList;
+    private List<NaverTradeArticle> articleList;
     private int mapExposedCount;
     private boolean nonMapExposedIncluded;
 
-    public NaverTradeInfo() {
+    public NaverTrade() {
     }
 
     @Builder
-    public NaverTradeInfo(boolean isMoreData, List<NaverTradeInfoArticle> articleList, int mapExposedCount, boolean nonMapExposedIncluded) {
+    public NaverTrade(boolean isMoreData, List<NaverTradeArticle> articleList, int mapExposedCount, boolean nonMapExposedIncluded) {
         this.isMoreData = isMoreData;
         this.articleList = articleList;
         this.mapExposedCount = mapExposedCount;

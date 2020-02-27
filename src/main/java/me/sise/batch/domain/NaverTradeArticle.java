@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NaverTradeInfoArticle {
+public class NaverTradeArticle {
     private String articleNo;
     private String articleName;
     private String articleStatus;
@@ -48,45 +48,45 @@ public class NaverTradeInfoArticle {
     private String tradeDayClusterName;
     private String tradeYearMonth;
 
-    public NaverTradeInfoArticle() {
+    public NaverTradeArticle() {
     }
 
     @Builder
-    public NaverTradeInfoArticle(String articleNo,
-                                 String articleName,
-                                 String articleStatus,
-                                 String realEstateTypeCode,
-                                 String realEstateTypeName,
-                                 String articleRealEstateTypeCode,
-                                 String tradeTypeCode,
-                                 String tradeTypeName,
-                                 String verificationTypeCode,
-                                 String floorInfo,
-                                 String rentPrc,
-                                 String priceChangeState,
-                                 boolean isPriceModification,
-                                 String dealOrWarrantPrc,
-                                 String areaName,
-                                 int area1,
-                                 int area2,
-                                 String direction,
-                                 String articleConfirmYmd,
-                                 int siteImageCount,
-                                 String articleFeatureDesc,
-                                 List<String> tagList,
-                                 String buildingName,
-                                 int sameAddrCnt,
-                                 int sameAddrDirectCnt,
-                                 String sameAddrMaxPrc,
-                                 String sameAddrMinPrc,
-                                 String cpid,
-                                 String cpName,
-                                 String cpPcArticleUrl,
-                                 String cpPcArticleBridgeUrl,
-                                 String realtorName,
-                                 String latitude,
-                                 String longitude,
-                                 String tradeDayClusterName, String tradeYearMonth) {
+    public NaverTradeArticle(String articleNo,
+                             String articleName,
+                             String articleStatus,
+                             String realEstateTypeCode,
+                             String realEstateTypeName,
+                             String articleRealEstateTypeCode,
+                             String tradeTypeCode,
+                             String tradeTypeName,
+                             String verificationTypeCode,
+                             String floorInfo,
+                             String rentPrc,
+                             String priceChangeState,
+                             boolean isPriceModification,
+                             String dealOrWarrantPrc,
+                             String areaName,
+                             int area1,
+                             int area2,
+                             String direction,
+                             String articleConfirmYmd,
+                             int siteImageCount,
+                             String articleFeatureDesc,
+                             List<String> tagList,
+                             String buildingName,
+                             int sameAddrCnt,
+                             int sameAddrDirectCnt,
+                             String sameAddrMaxPrc,
+                             String sameAddrMinPrc,
+                             String cpid,
+                             String cpName,
+                             String cpPcArticleUrl,
+                             String cpPcArticleBridgeUrl,
+                             String realtorName,
+                             String latitude,
+                             String longitude,
+                             String tradeDayClusterName, String tradeYearMonth) {
         this.articleNo = articleNo;
         this.articleName = articleName;
         this.articleStatus = articleStatus;
