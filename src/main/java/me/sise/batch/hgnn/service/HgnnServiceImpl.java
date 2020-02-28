@@ -5,19 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.google.common.collect.Lists;
+import me.sise.batch.hgnn.feign.HgnnApiClient;
 import me.sise.batch.hgnn.repository.ApartmentMatchTable;
 import me.sise.batch.hgnn.repository.ApartmentMatchTableRepository;
-import me.sise.batch.domain.Apartment;
-import me.sise.batch.hgnn.feign.HgnnApiClient;
 import me.sise.batch.hgnn.repository.AptTemp;
 import me.sise.batch.hgnn.repository.AptTempRepository;
 import me.sise.batch.hgnn.repository.RegionTemp;
 import me.sise.batch.hgnn.repository.RegionTempRepository;
 import me.sise.batch.infrastructure.jpa.RegionRepository;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
@@ -198,7 +195,7 @@ public class HgnnServiceImpl implements HgnnService {
         }
     }
 
-    @Scheduled(fixedDelay = Integer.MAX_VALUE)
+//    @Scheduled(fixedDelay = Integer.MAX_VALUE)
     @Override
     public void test5() {
         for (ApartmentMatchTable amt : apartmentMatchTableRepository.findByHgnnIdIsNull()) {

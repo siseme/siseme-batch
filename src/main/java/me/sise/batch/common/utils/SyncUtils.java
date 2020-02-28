@@ -6,11 +6,15 @@ import me.sise.batch.domain.RegionType;
 import me.sise.batch.domain.Rent;
 import me.sise.batch.domain.Ticket;
 import me.sise.batch.domain.Trade;
+import me.sise.batch.domain.YearMonthDay;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class SyncUtils {
     public static AreaType getAreaType(Double area) {
@@ -29,13 +33,11 @@ public class SyncUtils {
     }
 
     public static String getStatsRegionCode(RegionType regionType, Ticket trade) {
-        if(regionType == RegionType.SIDO) {
+        if (regionType == RegionType.SIDO) {
             return trade.getSidoCode();
-        }
-        else if(regionType == RegionType.GUNGU) {
+        } else if (regionType == RegionType.GUNGU) {
             return trade.getGunguCode();
-        }
-        else if(regionType == RegionType.DONG) {
+        } else if (regionType == RegionType.DONG) {
             return trade.getDongCode();
         }
         return "";
@@ -74,6 +76,10 @@ public class SyncUtils {
                                                                                         .replace(",", ""));
     }
 
+    public static String getNaverPrice(String price) {
+        return price.replace("억 ", "").replace("억", "0,000");
+    }
+
     public static MonthType getMonthType(String day) {
         if (StringUtils.isEmpty(day)) {
             return MonthType.UNKNOWN;
@@ -105,5 +111,20 @@ public class SyncUtils {
     public static String getYyyyMmDate(YearMonth yearMonth) {
         return yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"))
                         .replace("-", "");
+    }
+
+    public static YearMonthDay getYearMonthDay(String yearMonthDay) throws ParseException {
+        SimpleDateFormat basicFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-M-d");
+        Date date = basicFormat.parse(yearMonthDay);
+        String[] strings = ymdFormat.format(date).split("-");
+        return YearMonthDay.builder()
+                           .year(strings[0])
+                           .month(strings[1])
+                           .day(strings[2]).build();
+    }
+
+    public static boolean getTradeStatus(String articleStatus) {
+        return !articleStatus.equals("R0");
     }
 }

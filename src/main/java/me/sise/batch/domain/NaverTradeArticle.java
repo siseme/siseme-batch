@@ -47,6 +47,7 @@ public class NaverTradeArticle {
     private String longitude;
     private String tradeDayClusterName;
     private String tradeYearMonth;
+    private String tradeCompleteYmd;
 
     public NaverTradeArticle() {
     }
@@ -86,7 +87,8 @@ public class NaverTradeArticle {
                              String realtorName,
                              String latitude,
                              String longitude,
-                             String tradeDayClusterName, String tradeYearMonth) {
+                             String tradeDayClusterName, String tradeYearMonth,
+                             String tradeCompleteYmd) {
         this.articleNo = articleNo;
         this.articleName = articleName;
         this.articleStatus = articleStatus;
@@ -123,5 +125,6 @@ public class NaverTradeArticle {
         this.longitude = longitude;
         this.tradeDayClusterName = tradeDayClusterName;
         this.tradeYearMonth = tradeYearMonth;
+        this.tradeCompleteYmd = tradeCompleteYmd;
     }
 }

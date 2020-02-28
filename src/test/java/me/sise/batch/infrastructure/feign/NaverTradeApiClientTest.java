@@ -20,4 +20,5 @@ public class NaverTradeApiClientTest {
     public void getNaverTradeInfo() {
         log.info(naverClient.getNaverTradeInfo("111830", 1).toString());
     }
+
 }
