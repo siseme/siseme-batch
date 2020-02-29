@@ -79,7 +79,7 @@ public class NaveSyncService {
     private NaverTradeInfo toNaverTradeInfo(NaverTradeArticle naverTradeArticle,
                                             ApartmentMatchTable apt,
                                             OpenApiTradeInfo openApiTradeInfo) {
-        YearMonthDay yearMonthDay = null;
+        YearMonthDay yearMonthDay;
         try {
             yearMonthDay = SyncUtils.getYearMonthDay(naverTradeArticle.getArticleConfirmYmd());
         } catch (ParseException e) {
@@ -112,6 +112,8 @@ public class NaveSyncService {
                              .tradeCompleteYmd(naverTradeArticle.getTradeCompleteYmd())
                              .tradeType(naverTradeArticle.getTradeTypeName())
                              .rentPrc(naverTradeArticle.getRentPrc())
+                             .portalId(apt.getPortalId())
+                             .hgnnId(apt.getHgnnId())
                              .build();
     }
 }

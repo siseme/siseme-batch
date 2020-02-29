@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -126,5 +127,9 @@ public class NaverTradeArticle {
         this.tradeDayClusterName = tradeDayClusterName;
         this.tradeYearMonth = tradeYearMonth;
         this.tradeCompleteYmd = tradeCompleteYmd;
+    }
+
+    public String getDealOrWarrantPrc() {
+        return StringUtils.isEmpty(dealOrWarrantPrc) ? "0" : dealOrWarrantPrc;
     }
 }

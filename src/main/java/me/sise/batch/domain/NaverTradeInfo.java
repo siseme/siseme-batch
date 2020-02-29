@@ -42,7 +42,7 @@ public class NaverTradeInfo extends BaseEntity {
     // 층
     private String floor;
     // 거래금액
-    private String price;
+    private String price = "0";
     // 도로명
     private String road;
     // 도로명건물본번호코드
@@ -86,12 +86,14 @@ public class NaverTradeInfo extends BaseEntity {
     // 매물 특징
     private String articleFeatureDesc;
     // 매물 거래 일자
-    @Builder.Default
-    private String tradeCompleteYmd = null;
+    private String tradeCompleteYmd;
     // 매물 타입
     private String tradeType;
     // 월세
-    @Builder.Default
-    private String rentPrc = null;
+    private String rentPrc;
+    // 포탈id
+    private String portalId;
+    // 호갱노노id
+    private String hgnnId;
 
 }
