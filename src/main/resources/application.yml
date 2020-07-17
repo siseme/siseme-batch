@@ -37,4 +37,4 @@ rent-list-api:
   ribbon:
     listOfServers: openapi.molit.go.kr:8081
   api:
-    key: '{cipher}e413a691dd4176541c3ada2ff3b1c4c043b887879c4ae71eec3eae54212bf88b6de7d5438b96675a2c1205ccaa89cd2b25bf967c5777f2f22ff8c6c776cefd9a9cde4369b12d3f565cc3dd313ac50c0ca29f77a469f45fc00ccd7ccf591a018be7b2be122535840fc4b7852cb15a773a684904adece892181cbe3b92b789fc34'
+    key: '{cipher}3022f1a387c75a85df65ea2ad15440cdbc5f72a4c90e57262f8728b81fd3823f'
